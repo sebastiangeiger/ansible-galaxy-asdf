@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include ansible-galaxy-asdf"
+      include_role:
+        name: "ansible-galaxy-asdf"
