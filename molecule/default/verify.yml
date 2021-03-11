@@ -1,10 +1,24 @@
 ---
-# This is an example playbook to execute Ansible tests.
-
 - name: Verify
   hosts: all
   gather_facts: false
+
   tasks:
-  - name: Example assertion
-    assert:
-      that: true
+    - name: List which plugins are installed
+      command: "/root/.asdf/bin/asdf plugin list"
+      register: asdf_plugin_list
+      changed_when: false
+
+    - name: Ensure that we've installed the postgres plugin
+      assert:
+        that: '"postgres" in {{ asdf_plugin_list.stdout_lines }}'
+
+    - name: Get the asdf fish completions
+      stat:
+        path: "/root/.config/fish/completions/asdf.fish"
+      register: fish_asdf_completions
+      changed_when: false
+
+    - name: Ensure the fish asdf completions are installed
+      assert:
+        that: fish_asdf_completions.stat.exists
