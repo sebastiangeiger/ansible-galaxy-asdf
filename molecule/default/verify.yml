@@ -22,3 +22,12 @@
     - name: Ensure the fish asdf completions are installed
       assert:
         that: fish_asdf_completions.stat.exists
+
+    - name: Get the nodejs versions installed
+      command: "/root/.asdf/bin/asdf list nodejs"
+      register: nodejs_versions
+      changed_when: false
+
+    - name: Ensure that nodejs 12.16.1 is installed
+      assert:
+        that: '"12.16.1" in "{{ nodejs_versions.stdout_lines | first }}"'

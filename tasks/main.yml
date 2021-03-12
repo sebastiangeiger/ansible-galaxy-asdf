@@ -12,6 +12,12 @@
 - name: Set the asdf user home for future use
   set_fact:
     asdf_user_home: '{{ asdf_user_registered.home }}'
-    asdf_binary: '{{ asdf_user_registered.home }}/.asdf/bin/asdf'
+    asdf_binary: 'asdf'
 
+- import_tasks: dependencies.yml
 - import_tasks: asdf_plugins.yml
+  environment:
+    PATH: '{{ asdf_user_home }}/.asdf/bin:{{ ansible_env.PATH }}'
+- import_tasks: nodejs.yml
+  environment:
+    PATH: '{{ asdf_user_home }}/.asdf/bin:{{ ansible_env.PATH }}'

@@ -1,0 +1,14 @@
+---
+- name: Update apt cache
+  become: true
+  apt: update_cache=true cache_valid_time=3600
+
+- name: Install curl
+  become: true
+  apt: pkg=curl state=present
+
+- name: Checkout ASDF core
+  git:
+    repo: 'https://github.com/asdf-vm/asdf.git'
+    dest: '{{ asdf_user_home }}/.asdf'
+    version: v0.8.0
