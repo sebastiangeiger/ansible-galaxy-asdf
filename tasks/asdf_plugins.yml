@@ -33,12 +33,3 @@
   fail:
     msg: "Couldn't get the list of installed asdf plugins"
   when: not installed_asdf_plugins is defined
-
-- name: Install language specific ASDF plugin
-  command: "{{ asdf_binary }} plugin add {{ item }}"
-  when: item not in installed_asdf_plugins
-  with_items:
-    - nodejs
-    - elixir
-    - erlang
-    - postgres

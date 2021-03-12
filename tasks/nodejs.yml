@@ -1,4 +1,8 @@
 ---
+- name: Install asdf nodejs plugin
+  command: "{{ asdf_binary }} plugin add nodejs"
+  when: "'nodejs' not in installed_asdf_plugins"
+
 - name: Get list of gpg keys
   command: gpg --list-keys --keyring asdf-nodejs.gpg
   register: gpg_keys
@@ -12,12 +16,11 @@
 
 - name: Get list of installed nodejs versions
   command: '{{ asdf_binary }} list nodejs'
-  register: nodejs_versions
+  register: asdf_installed_nodejs_versions
   changed_when: false
   check_mode: false
 
 - name: Install nodejs versions
   command: "{{ asdf_binary }} install nodejs {{ item }}"
-  when: item not in nodejs_versions.stdout_lines | map('trim')
-  with_items:
-    - "12.16.1"
+  when: item not in asdf_installed_nodejs_versions.stdout_lines | map('trim')
+  with_items: '{{ asdf_nodejs }}'

@@ -3,15 +3,20 @@
   hosts: all
   gather_facts: false
 
+  vars:
+    expected_asdf_packages: [
+      "nodejs",
+      "  12.16.1",
+      "  13.14.0",
+      "yarn",
+      "  1.22.5"
+    ]
+
   tasks:
     - name: List which plugins are installed
       command: "/root/.asdf/bin/asdf plugin list"
       register: asdf_plugin_list
       changed_when: false
-
-    - name: Ensure that we've installed the postgres plugin
-      assert:
-        that: '"postgres" in {{ asdf_plugin_list.stdout_lines }}'
 
     - name: Get the asdf fish completions
       stat:
@@ -23,11 +28,11 @@
       assert:
         that: fish_asdf_completions.stat.exists
 
-    - name: Get the nodejs versions installed
-      command: "/root/.asdf/bin/asdf list nodejs"
-      register: nodejs_versions
+    - name: Get the versions of all packages installed
+      command: "/root/.asdf/bin/asdf list"
+      register: installed_asdf_packages
       changed_when: false
 
-    - name: Ensure that nodejs 12.16.1 is installed
+    - name: Ensure that everything is installed
       assert:
-        that: '"12.16.1" in "{{ nodejs_versions.stdout_lines | first }}"'
+        that: '{{ installed_asdf_packages.stdout_lines }} == {{ expected_asdf_packages }}'

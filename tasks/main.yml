@@ -15,9 +15,17 @@
     asdf_binary: 'asdf'
 
 - import_tasks: dependencies.yml
+
 - import_tasks: asdf_plugins.yml
   environment:
     PATH: '{{ asdf_user_home }}/.asdf/bin:{{ ansible_env.PATH }}'
+
 - import_tasks: nodejs.yml
   environment:
     PATH: '{{ asdf_user_home }}/.asdf/bin:{{ ansible_env.PATH }}'
+  when: asdf_nodejs is defined
+
+- import_tasks: yarn.yml
+  environment:
+    PATH: '{{ asdf_user_home }}/.asdf/bin:{{ ansible_env.PATH }}'
+  when: asdf_yarn is defined

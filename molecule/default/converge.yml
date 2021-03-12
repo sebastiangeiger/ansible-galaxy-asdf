@@ -4,6 +4,11 @@
 
   vars:
     asdf_user: root
+    asdf_nodejs:
+      - 12.16.1
+      - 13.14.0
+    asdf_yarn:
+      - 1.22.5
 
   tasks:
     - name: "Include ansible-galaxy-asdf"
