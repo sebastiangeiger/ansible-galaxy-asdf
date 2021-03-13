@@ -9,6 +9,12 @@
       - 13.14.0
     asdf_yarn:
       - 1.22.5
+    asdf_erlang:
+      - 23.2.7
+    asdf_elixir:
+      - "1.11.3-otp-23"
+    asdf_postgres:
+      - 12.2
 
   tasks:
     - name: "Include ansible-galaxy-asdf"

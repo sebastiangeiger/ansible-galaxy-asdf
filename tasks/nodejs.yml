@@ -1,4 +1,8 @@
 ---
+- name: Install curl
+  become: true
+  apt: pkg=curl state=present
+
 - name: Install asdf nodejs plugin
   command: "{{ asdf_binary }} plugin add nodejs"
   when: "'nodejs' not in installed_asdf_plugins"

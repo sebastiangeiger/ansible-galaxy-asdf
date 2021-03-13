@@ -2,10 +2,11 @@
 - name: Update apt cache
   become: true
   apt: update_cache=true cache_valid_time=3600
-
-- name: Install curl
-  become: true
-  apt: pkg=curl state=present
+  when: |
+    asdf_nodejs is defined
+    or asdf_erlang is defined
+    or asdf_elixir is defined
+    or asdf_postgres is defined
 
 - name: Checkout ASDF core
   git:

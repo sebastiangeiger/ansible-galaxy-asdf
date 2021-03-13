@@ -29,3 +29,18 @@
   environment:
     PATH: '{{ asdf_user_home }}/.asdf/bin:{{ ansible_env.PATH }}'
   when: asdf_yarn is defined
+
+- import_tasks: erlang.yml
+  environment:
+    PATH: '{{ asdf_user_home }}/.asdf/bin:{{ ansible_env.PATH }}'
+  when: asdf_erlang is defined
+
+- import_tasks: elixir.yml
+  environment:
+    PATH: '{{ asdf_user_home }}/.asdf/bin:{{ ansible_env.PATH }}'
+  when: asdf_elixir is defined
+
+- import_tasks: postgres.yml
+  environment:
+    PATH: '{{ asdf_user_home }}/.asdf/bin:{{ ansible_env.PATH }}'
+  when: asdf_postgres is defined

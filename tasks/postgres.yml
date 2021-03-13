@@ -1,0 +1,25 @@
+---
+- name: Install postgres dependencies
+  become: true
+  apt:
+    pkg:
+      - build-essential
+      - curl
+      - libreadline-dev
+      - zlib1g-dev
+    state: present
+
+- name: Install postgres asdf plugin
+  command: "{{ asdf_binary }} plugin add postgres"
+  when: "'postgres' not in installed_asdf_plugins"
+
+- name: Get list of installed postgres versions
+  command: '{{ asdf_binary }} list postgres'
+  register: asdf_installed_postgres_versions
+  changed_when: false
+  check_mode: false
+
+- name: Install postgres versions
+  command: "{{ asdf_binary }} install postgres {{ item }}"
+  when: item not in asdf_installed_postgres_versions.stdout_lines | map('trim')
+  with_items: '{{ asdf_postgres }}'
