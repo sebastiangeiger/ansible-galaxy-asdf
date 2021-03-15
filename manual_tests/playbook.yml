@@ -1,0 +1,29 @@
+---
+# Ansible playbook for manually testing the role
+
+- hosts: ubuntu
+  vars:
+    asdf_user: testing
+    asdf_nodejs:
+      - 12.16.1
+      - 13.14.0
+    asdf_yarn:
+      - 1.22.5
+    asdf_erlang:
+      - 23.2.7
+    asdf_elixir:
+      - "1.11.3-otp-23"
+    asdf_postgres:
+      - 12.2
+
+  pre_tasks:
+    - user:
+        name: testing
+        # password is 'testing'
+        password: $1$laskdj$kgPmmR.IrbTEZQZPv7co3.
+        state: present
+    - apt: update_cache=true cache_valid_time=3600
+    - apt: pkg=acl state=present
+
+  roles:
+    - role: '../..'

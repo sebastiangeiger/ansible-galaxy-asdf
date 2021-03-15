@@ -6,19 +6,24 @@
       - curl
       - autoconf
       - libncurses5-dev
+      - gcc
     state: present
 
-- name: Install erlang asdf plugin
-  command: "{{ asdf_binary }} plugin add erlang"
-  when: "'erlang' not in installed_asdf_plugins"
+- name: Install erlang plugin and desired erlang versions
+  become: true
+  become_user: '{{ asdf_user }}'
+  block:
+    - name: Install erlang asdf plugin
+      command: "{{ asdf_binary }} plugin add erlang"
+      when: "'erlang' not in installed_asdf_plugins"
 
-- name: Get list of installed erlang versions
-  command: '{{ asdf_binary }} list erlang'
-  register: asdf_installed_erlang_versions
-  changed_when: false
-  check_mode: false
+    - name: Get list of installed erlang versions
+      command: '{{ asdf_binary }} list erlang'
+      register: asdf_installed_erlang_versions
+      changed_when: false
+      check_mode: false
 
-- name: Install erlang versions
-  command: "{{ asdf_binary }} install erlang {{ item }}"
-  when: item not in asdf_installed_erlang_versions.stdout_lines | map('trim')
-  with_items: '{{ asdf_erlang }}'
+    - name: Install erlang versions
+      command: "{{ asdf_binary }} install erlang {{ item }}"
+      when: item not in asdf_installed_erlang_versions.stdout_lines | map('trim')
+      with_items: '{{ asdf_erlang }}'

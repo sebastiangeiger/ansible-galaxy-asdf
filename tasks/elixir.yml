@@ -3,17 +3,21 @@
   become: true
   apt: pkg=unzip state=present
 
-- name: Install elixir asdf plugin
-  command: "{{ asdf_binary }} plugin add elixir"
-  when: "'elixir' not in installed_asdf_plugins"
+- name: Install elixir plugin and desired elixir versions
+  become: true
+  become_user: '{{ asdf_user }}'
+  block:
+  - name: Install elixir asdf plugin
+    command: "{{ asdf_binary }} plugin add elixir"
+    when: "'elixir' not in installed_asdf_plugins"
 
-- name: Get list of installed elixir versions
-  command: '{{ asdf_binary }} list elixir'
-  register: asdf_installed_elixir_versions
-  changed_when: false
-  check_mode: false
+  - name: Get list of installed elixir versions
+    command: '{{ asdf_binary }} list elixir'
+    register: asdf_installed_elixir_versions
+    changed_when: false
+    check_mode: false
 
-- name: Install elixir versions
-  command: "{{ asdf_binary }} install elixir {{ item }}"
-  when: item not in asdf_installed_elixir_versions.stdout_lines | map('trim')
-  with_items: '{{ asdf_elixir }}'
+  - name: Install elixir versions
+    command: "{{ asdf_binary }} install elixir {{ item }}"
+    when: item not in asdf_installed_elixir_versions.stdout_lines | map('trim')
+    with_items: '{{ asdf_elixir }}'
