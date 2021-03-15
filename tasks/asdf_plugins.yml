@@ -1,9 +1,17 @@
 ---
+- name: Checkout ASDF core
+  git:
+    repo: 'https://github.com/asdf-vm/asdf.git'
+    dest: '{{ asdf_user_home }}/.asdf'
+    version: v0.8.0
+
 - name: Ensure there is a fish completions folder
   file:
     path: '{{ asdf_user_home }}/.config/fish/completions/'
     state: directory
     mode: 0755
+    owner: '{{ asdf_user }}'
+    group: '{{ asdf_user }}'
 
 - name: Install ASDF completions
   copy:
@@ -11,6 +19,8 @@
     dest: '{{ asdf_user_home }}/.config/fish/completions/asdf.fish'
     remote_src: true
     mode: 0755
+    owner: '{{ asdf_user }}'
+    group: '{{ asdf_user }}'
 
 - name: Get list of installed ASDF plugins
   command: '{{ asdf_binary }} plugin list'

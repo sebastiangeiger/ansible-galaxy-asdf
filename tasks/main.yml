@@ -17,6 +17,8 @@
 - import_tasks: dependencies.yml
 
 - import_tasks: asdf_plugins.yml
+  become: true
+  become_user: '{{ asdf_user }}'
   environment:
     PATH: '{{ asdf_user_home }}/.asdf/bin:{{ ansible_env.PATH }}'
 
