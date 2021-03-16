@@ -42,6 +42,11 @@
     PATH: '{{ asdf_user_home }}/.asdf/bin:{{ ansible_env.PATH }}'
   when: asdf_elixir is defined
 
+- import_tasks: ruby.yml
+  environment:
+    PATH: '{{ asdf_user_home }}/.asdf/bin:{{ ansible_env.PATH }}'
+  when: asdf_ruby is defined
+
 - import_tasks: postgres.yml
   environment:
     PATH: '{{ asdf_user_home }}/.asdf/bin:{{ ansible_env.PATH }}'
