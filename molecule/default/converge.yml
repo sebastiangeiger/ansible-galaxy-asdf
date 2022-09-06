@@ -12,5 +12,5 @@
 
   tasks:
     - name: "Include ansible-galaxy-asdf"
-      include_role:
+      ansible.builtin.include_role:
         name: "ansible-galaxy-asdf"

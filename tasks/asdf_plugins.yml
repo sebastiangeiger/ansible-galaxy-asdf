@@ -1,12 +1,12 @@
 ---
 - name: Checkout ASDF core
-  git:
+  ansible.builtin.git:
     repo: 'https://github.com/asdf-vm/asdf.git'
     dest: '{{ asdf_user_home }}/.asdf'
     version: v0.8.0
 
 - name: Ensure there is a fish completions folder
-  file:
+  ansible.builtin.file:
     path: '{{ asdf_user_home }}/.config/fish/completions/'
     state: directory
     mode: 0755
@@ -14,7 +14,7 @@
     group: '{{ asdf_user }}'
 
 - name: Install ASDF completions
-  copy:
+  ansible.builtin.copy:
     src: '{{ asdf_user_home }}/.asdf/completions/asdf.fish'
     dest: '{{ asdf_user_home }}/.config/fish/completions/asdf.fish'
     remote_src: true
@@ -23,23 +23,23 @@
     group: '{{ asdf_user }}'
 
 - name: Get list of installed ASDF plugins
-  command: '{{ asdf_binary }} plugin list'
+  ansible.builtin.command: '{{ asdf_binary }} plugin list'
   register: asdf_plugins
   changed_when: false
   check_mode: false
   ignore_errors: true
 
 - name: Correct for ASDF errors
-  set_fact:
+  ansible.builtin.set_fact:
     installed_asdf_plugins: []
   when: asdf_plugins.failed and asdf_plugins.stderr == "Oohes nooes ~! No plugins installed"
 
 - name: Extract installed asdf plugins
-  set_fact:
+  ansible.builtin.set_fact:
     installed_asdf_plugins: '{{ asdf_plugins.stdout_lines }}'
   when: not asdf_plugins.failed
 
 - name: Ensure we have the installed plugins
-  fail:
+  ansible.builtin.fail:
     msg: "Couldn't get the list of installed asdf plugins"
   when: not installed_asdf_plugins is defined

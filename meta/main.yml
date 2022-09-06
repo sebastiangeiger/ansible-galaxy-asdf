@@ -6,7 +6,7 @@ galaxy_info:
     A role that allows you to install asdf and manage plugins.
     This is something I wrote for myself and it's probably not ready for prime-time.
   license: license (BSD, MIT)
-  min_ansible_version: 2.1
+  min_ansible_version: "2.1"
   platforms:
     - name: Ubuntu
       versions:
