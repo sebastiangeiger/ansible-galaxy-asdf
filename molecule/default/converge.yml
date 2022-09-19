@@ -13,6 +13,8 @@
       - 1.14.0-otp-25
     asdf_erlang:
       - 25.0.4
+    asdf_ruby:
+      - 3.0.1
 
   tasks:
     - name: "Include ansible-galaxy-asdf"
