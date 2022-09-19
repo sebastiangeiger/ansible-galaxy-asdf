@@ -1,16 +1,16 @@
 ---
 - name: Ensure the user is set
-  fail: msg="Please set the 'asdf_user' variable"
+  ansible.builtin.fail: msg="Please set the 'asdf_user' variable"
   when: asdf_user is not defined
 
 - name: Get information on the asdf user
-  user:
+  ansible.builtin.user:
     name: '{{ asdf_user }}'
     state: present
   register: asdf_user_registered
 
 - name: Set the asdf user home for future use
-  set_fact:
+  ansible.builtin.set_fact:
     asdf_user_home: '{{ asdf_user_registered.home }}'
     asdf_binary: 'asdf'
 

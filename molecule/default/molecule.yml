@@ -4,9 +4,10 @@ dependency:
 driver:
   name: docker
 platforms:
-  - name: instance
-    image: docker.io/pycontribs/ubuntu:latest
-    pre_build_image: true
+  - name: debian_bullseye
+    image: debian:bullseye
+    dockerfile: Dockerfile
+    pre_build_image: false
 provisioner:
   name: ansible
 verifier:

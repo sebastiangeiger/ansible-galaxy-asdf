@@ -1,34 +1,23 @@
 ---
 - name: Install curl
   become: true
-  apt: pkg=curl state=present
+  ansible.builtin.apt: pkg=curl state=present
 
 - name: Install node plugin and desired node versions
   become: true
   become_user: '{{ asdf_user }}'
   block:
   - name: Install asdf nodejs plugin
-    command: "{{ asdf_binary }} plugin add nodejs"
+    ansible.builtin.command: "{{ asdf_binary }} plugin add nodejs"
     when: "'nodejs' not in installed_asdf_plugins"
 
-  - name: Get list of gpg keys
-    command: gpg --list-keys --keyring asdf-nodejs.gpg
-    register: gpg_keys
-    changed_when: false
-    check_mode: false
-    ignore_errors: true
-
-  - name: Import Node.js keys
-    command: '{{ asdf_user_home }}/.asdf/plugins/nodejs/bin/import-release-team-keyring'
-    when: '"Beth Griggs" not in gpg_keys.stdout'  # Chose a random maintainer
-
   - name: Get list of installed nodejs versions
-    command: '{{ asdf_binary }} list nodejs'
+    ansible.builtin.command: '{{ asdf_binary }} list nodejs'
     register: asdf_installed_nodejs_versions
     changed_when: false
     check_mode: false
 
   - name: Install nodejs versions
-    command: "{{ asdf_binary }} install nodejs {{ item }}"
+    ansible.builtin.command: "{{ asdf_binary }} install nodejs {{ item }}"
     when: item not in asdf_installed_nodejs_versions.stdout_lines | map('trim')
     with_items: '{{ asdf_nodejs }}'

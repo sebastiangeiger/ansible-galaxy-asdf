@@ -9,8 +9,10 @@
       - 13.14.0
     asdf_yarn:
       - 1.22.5
+    asdf_ruby:
+      - 3.0.1
 
   tasks:
     - name: "Include ansible-galaxy-asdf"
-      include_role:
+      ansible.builtin.include_role:
         name: "ansible-galaxy-asdf"

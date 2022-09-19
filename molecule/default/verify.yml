@@ -8,31 +8,33 @@
       "nodejs",
       "  12.16.1",
       "  13.14.0",
+      "ruby",
+      "  3.0.1",
       "yarn",
       "  1.22.5"
     ]
 
   tasks:
     - name: List which plugins are installed
-      command: "/root/.asdf/bin/asdf plugin list"
+      ansible.builtin.command: "/root/.asdf/bin/asdf plugin list"
       register: asdf_plugin_list
       changed_when: false
 
     - name: Get the asdf fish completions
-      stat:
+      ansible.builtin.stat:
         path: "/root/.config/fish/completions/asdf.fish"
       register: fish_asdf_completions
       changed_when: false
 
     - name: Ensure the fish asdf completions are installed
-      assert:
+      ansible.builtin.assert:
         that: fish_asdf_completions.stat.exists
 
     - name: Get the versions of all packages installed
-      command: "/root/.asdf/bin/asdf list"
+      ansible.builtin.command: "/root/.asdf/bin/asdf list"
       register: installed_asdf_packages
       changed_when: false
 
     - name: Ensure that everything is installed
-      assert:
+      ansible.builtin.assert:
         that: '{{ installed_asdf_packages.stdout_lines }} == {{ expected_asdf_packages }}'

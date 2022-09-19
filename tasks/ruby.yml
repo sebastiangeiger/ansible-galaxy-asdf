@@ -1,7 +1,7 @@
 ---
 - name: Install ruby dependencies
   become: true
-  apt:
+  ansible.builtin.apt:
     pkg:
       - autoconf
       - bison
@@ -22,16 +22,16 @@
   become_user: '{{ asdf_user }}'
   block:
     - name: Install ruby asdf plugin
-      command: "{{ asdf_binary }} plugin add ruby"
+      ansible.builtin.command: "{{ asdf_binary }} plugin add ruby"
       when: "'ruby' not in installed_asdf_plugins"
 
     - name: Get list of installed ruby versions
-      command: '{{ asdf_binary }} list ruby'
+      ansible.builtin.command: '{{ asdf_binary }} list ruby'
       register: asdf_installed_ruby_versions
       changed_when: false
       check_mode: false
 
     - name: Install ruby versions
-      command: "{{ asdf_binary }} install ruby {{ item }}"
+      ansible.builtin.command: "{{ asdf_binary }} install ruby {{ item }}"
       when: item not in asdf_installed_ruby_versions.stdout_lines | map('trim')
       with_items: '{{ asdf_ruby }}'
