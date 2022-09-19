@@ -1,4 +1,11 @@
 ---
+- name: Install asdf dependencies
+  become: true
+  ansible.builtin.apt:
+    pkg:
+      - git
+    state: present
+
 - name: Checkout ASDF core
   ansible.builtin.git:
     repo: 'https://github.com/asdf-vm/asdf.git'

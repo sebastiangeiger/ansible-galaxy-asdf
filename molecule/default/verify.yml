@@ -5,10 +5,6 @@
 
   vars:
     expected_asdf_packages: [
-      "elixir",
-      "  1.14.0-otp-25",
-      "erlang",
-      "  25.0.4",
       "nodejs",
       "  12.16.1",
       "  13.14.0",
