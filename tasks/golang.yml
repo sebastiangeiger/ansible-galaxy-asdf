@@ -1,0 +1,27 @@
+---
+- name: Install golang dependencies
+  become: true
+  ansible.builtin.apt:
+    pkg:
+      - coreutils
+      - curl
+    state: present
+
+- name: Install golang plugin and desired golang versions
+  become: true
+  become_user: '{{ asdf_user }}'
+  block:
+    - name: Install golang asdf plugin
+      ansible.builtin.command: "{{ asdf_binary }} plugin add golang"
+      when: "'golang' not in installed_asdf_plugins"
+
+    - name: Get list of installed golang versions
+      ansible.builtin.command: '{{ asdf_binary }} list golang'
+      register: asdf_installed_golang_versions
+      changed_when: false
+      check_mode: false
+
+    - name: Install golang versions
+      ansible.builtin.command: "{{ asdf_binary }} install golang {{ item }}"
+      when: item not in asdf_installed_golang_versions.stdout_lines | map('trim')
+      with_items: '{{ asdf_golang }}'

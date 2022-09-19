@@ -5,6 +5,8 @@
 
   vars:
     expected_asdf_packages: [
+      "golang",
+      "  1.19.1",
       "nodejs",
       "  12.16.1",
       "  13.14.0",

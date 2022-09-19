@@ -4,6 +4,8 @@
 
   vars:
     asdf_user: root
+    asdf_golang:
+      - 1.19.1
     asdf_nodejs:
       - 12.16.1
       - 13.14.0
